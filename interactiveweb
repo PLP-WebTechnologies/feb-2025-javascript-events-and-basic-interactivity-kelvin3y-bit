@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interactive Web Demo</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 20px;
+      background: #f4f4f4;
+    }
+
+    button {
+      padding: 10px 15px;
+      font-size: 16px;
+      margin: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      transform: scale(1.1);
+      background-color: coral;
+    }
+
+    .tab-content {
+      display: none;
+      margin-top: 10px;
+      padding: 10px;
+      background: white;
+      border: 1px solid #ccc;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    input {
+      display: block;
+      margin: 10px 0;
+      padding: 8px;
+      width: 250px;
+    }
+
+    #feedback {
+      color: red;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Interactive Features Demo</h1>
+
+  <!-- Event Handling -->
+  <section>
+    <h2>1. Event Handling </h2>
+    <button id="eventBtn">Click Me</button>
+  </section>
+
+  <!-- Interactive Elements -->
+  <section>
+    <h2>2. Interactive Elements</h2>
+
+    <!-- Button that changes -->
+    <button id="colorBtn">Change Me</button>
+
+    <!-- Image Slideshow -->
+    <div>
+      <img id="slide" src="https://via.placeholder.com/300x200?text=Image+1" width="300" />
+      <br>
+      <button onclick="nextImage()">Next Image</button>
+    </div>
+
+    <!-- Tabs -->
+    <div class="tabs">
+      <button onclick="showTab(0)">Tab 1</button>
+      <button onclick="showTab(1)">Tab 2</button>
+    </div>
+    <div class="tab-content active">Tab 1 Content </div>
+    <div class="tab-content">Tab 2 Content </div>
+  </section>
+
+  <!-- Form Validation -->
+  <section>
+    <h2>Form Validation </h2>
+    <form id="myForm">
+      <input type="email" id="email" placeholder="Email" required />
+      <input type="password" id="password" placeholder="Password" required />
+      <button type="submit">Submit</button>
+    </form>
+    <p id="feedback"></p>
+  </section>
+
+  <script>
+    // 1. Event Handling
+    const eventBtn = document.getElementById('eventBtn');
+
+    eventBtn.addEventListener('click', () => {
+      alert('Button Clicked!');
+    });
+
+    eventBtn.addEventListener('mouseenter', () => {
+      eventBtn.style.backgroundColor = 'lightblue';
+    });
+
+    eventBtn.addEventListener('mouseleave', () => {
+      eventBtn.style.backgroundColor = '';
+    });
+
+    eventBtn.addEventListener('dblclick', () => {
+      alert('Secret Double Click!');
+    });
+
+    document.addEventListener('keydown', (e) => {
+      console.log(`Key pressed: ${e.key}`);
+    });
+
+    // 2. Button changes text & color
+    const colorBtn = document.getElementById('colorBtn');
+    colorBtn.addEventListener('click', () => {
+      colorBtn.textContent = 'Changed!';
+      colorBtn.style.backgroundColor = 'green';
+      colorBtn.style.color = 'white';
+    });
+
+    // Slideshow
+    const images = [
+      "https://via.placeholder.com/300x200?text=Image+1",
+      "https://via.placeholder.com/300x200?text=Image+2",
+      "https://via.placeholder.com/300x200?text=Image+3"
+    ];
+    let index = 0;
+    function nextImage() {
+      index = (index + 1) % images.length;
+      document.getElementById('slide').src = images[index];
+    }
+
+    // Tabs
+    function showTab(i) {
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach((tab, idx) => {
+        tab.classList.toggle('active', idx === i);
+      });
+    }
+
+    // form validation
+    const form = document.getElementById('myForm');
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const feedback = document.getElementById('feedback');
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const emailVal = email.value;
+      const passVal = password.value;
+
+      if (!/\S+@\S+\.\S+/.test(emailVal)) {
+        feedback.textContent = '❌ Invalid email address';
+      } else if (passVal.length < 8) {
+        feedback.textContent = '❌ Password must be at least 8 characters';
+      } else {
+        feedback.textContent = '✅ Form submitted successfully!';
+        feedback.style.color = 'green';
+      }
+    });
+
+    // Real-time feedback
+    email.addEventListener('input', () => {
+      feedback.style.color = 'red';
+      feedback.textContent = /\S+@\S+\.\S+/.test(email.value)
+        ? '✔️ Valid email'
+        : '❌ Invalid email';
+    });
+  </script>
+</body>
+</html>
